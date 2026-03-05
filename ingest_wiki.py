@@ -15,9 +15,9 @@ def extraire_fandom_ultime(nom):
         )
         page = context.new_page()
         
-        # URL vers le wiki ANGLAIS (souvent plus stable pour les tests) ou FR
+        # URL vers le wiki 
         url = f"https://jujutsu-kaisen.fandom.com/fr/wiki/{nom.replace(' ', '_')}"
-        print(f"🌐 Navigation vers : {url}")
+        print(f"Navigation vers : {url}")
         
         try:
             # Augmentation du timeout à 60s
@@ -27,7 +27,6 @@ def extraire_fandom_ultime(nom):
             time.sleep(5) 
             
             # 2. Tenter de cliquer sur "Accepter" si un bouton de cookies apparaît
-            # (Optionnel, mais aide souvent)
             try:
                 page.click("text=Accepter", timeout=5000)
             except:
@@ -38,7 +37,7 @@ def extraire_fandom_ultime(nom):
             if page.locator(".mw-parser-output").count() > 0:
                 content = page.locator(".mw-parser-output").inner_text()
             else:
-                print("⚠️ .mw-parser-output non trouvé, extraction du texte global...")
+                print(".mw-parser-output non trouvé, extraction du texte global...")
                 content = page.locator("body").inner_text()
             
             if content and len(content) > 200:
@@ -46,16 +45,16 @@ def extraire_fandom_ultime(nom):
                 with open(nom_fichier, "w", encoding="utf-8") as f:
                     f.write(f"SOURCE: {url}\n\n")
                     f.write(content)
-                print(f"✅ Sauvegardé : {nom_fichier} ({len(content)} caractères)")
+                print(f"Sauvegardé : {nom_fichier} ({len(content)} caractères)")
             else:
-                print(f"❌ Contenu trop court ou vide pour {nom}")
+                print(f"Contenu trop court ou vide pour {nom}")
 
         except Exception as e:
-            print(f"❌ Erreur critique pour {nom} : {e}")
+            print(f"Erreur critique pour {nom} : {e}")
         
         browser.close()
 
-# --- Exécution ---
+#Exécution 
 personnages = ["Satoru Gojo", "Yuji Itadori"]
 for p in personnages:
     extraire_fandom_ultime(p)
